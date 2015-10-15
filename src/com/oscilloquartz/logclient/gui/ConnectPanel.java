@@ -1,5 +1,6 @@
 package com.oscilloquartz.logclient.gui;
 
+import com.oscilloquartz.logclient.gui.textfield.IPv4AddressTextField;
 import com.oscilloquartz.logclient.gui.textfield.demo1.IPTextField;
 import com.oscilloquartz.logclient.gui.textfield.demo2.VersionTextField;
 
@@ -38,7 +39,10 @@ public class ConnectPanel extends JPanel {
             IPTextField a   = new IPTextField();
             VersionTextField b = new VersionTextField();
             JTextField c = new JTextField("abc", 5);
-            connectButton   = new JButton("Connect");
+
+            IPv4AddressTextField d = new IPv4AddressTextField();
+
+                    connectButton   = new JButton("Connect");
 
             ipAddressField.setPreferredSize(new Dimension(125, 24));
             ipAddressField.setInputVerifier(new InputVerifier() {
@@ -88,7 +92,8 @@ public class ConnectPanel extends JPanel {
             //add(ipAddressField);
             //add(a);
             //add(b);
-            add(c);
+            //add(c);
+            add(d);
             add(connectButton);
         } catch (ParseException e) {
 

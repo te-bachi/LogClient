@@ -1,6 +1,6 @@
 package com.oscilloquartz.logclient.gui.textfield.demo3;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -13,17 +13,51 @@ import javax.swing.text.PlainDocument;
 
 public class AddingDocumentListenerJTextFieldSample {
 
-    private class IntDocument extends PlainDocument {
+    private JFrame frame;
+
+    public class IntTestDocument extends PlainDocument {
+
+        private int min;
+        private int max;
+
+        public IntTestDocument(int min, int max) {
+            super();
+            this.min = min;
+            this.max = max;
+        }
+
         @Override
         public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+            String oldString;
+            String newString;
+            int number;
 
-            System.out.println("offs=" + offs + " str=" + str + "");
+            if (this.getLength() + str.length() > 10) {
+                return;
+            }
+
+            oldString = this.getText(0, this.getLength());
+            newString = oldString.substring(0, offs) + str + oldString.substring(offs, this.getLength());
+
+            try {
+                number = Integer.parseInt(newString);
+            } catch (NumberFormatException e) {
+                return;
+            }
+
+            if (number < this.min || number > this.max) {
+                return;
+            }
+
+            System.out.println("offs=" + offs + " str=" + str + " total=" + newString);
             super.insertString(offs, str, a);
         }
+
+
     }
 
-    public static void main(String args[]) {
-        final JFrame frame = new JFrame("Default Example");
+    public AddingDocumentListenerJTextFieldSample() {
+        frame = new JFrame("Default Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTextField textField = new JTextField();
@@ -65,10 +99,20 @@ public class AddingDocumentListenerJTextFieldSample {
             }
         };
 
-
+        textField.setDocument(new IntTestDocument(0, 255));
         textField.getDocument().addDocumentListener(documentListener);
 
         frame.setSize(250, 150);
         frame.setVisible(true);
+    }
+
+    public static void main(String args[]) {
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                AddingDocumentListenerJTextFieldSample frame = new AddingDocumentListenerJTextFieldSample();
+            }
+        });
     }
 }
