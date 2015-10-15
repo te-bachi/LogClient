@@ -26,39 +26,38 @@ public class IntegerDocument extends PlainDocument {
         String  newString;
         int     number;
 
-
         oldString = this.getText(0, this.getLength());
         newString = oldString.substring(0, offs) + str + oldString.substring(offs, this.getLength());
 
         if (this.getLength() + str.length() > len) {
-            performLengthAction(offs, str, newString);
+            performLengthAction(offs, str, a, newString);
             return;
         }
 
         try {
             number = Integer.parseInt(newString);
         } catch (NumberFormatException e) {
-            performNotNumberAction(offs, str, newString);
+            performNotNumberAction(offs, str, a, newString);
             return;
         }
 
         if (number < this.min || number > this.max) {
-            performMinMaxAction(offs, str, newString);
+            performMinMaxAction(offs, str, a, newString);
             return;
         }
 
         super.insertString(offs, str, a);
     }
 
-    public void performLengthAction(int offs, String inserted, String full) {
+    public void performLengthAction(int offs, String str, AttributeSet a, String newString) throws BadLocationException {
 
     }
 
-    public void performNotNumberAction(int offs, String inserted, String full) {
+    public void performNotNumberAction(int offs, String str, AttributeSet a, String newString) throws BadLocationException {
 
     }
 
-    public void performMinMaxAction(int offs, String inserted, String full) {
+    public void performMinMaxAction(int offs, String str, AttributeSet a, String newString) throws BadLocationException {
 
     }
 }
