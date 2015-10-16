@@ -17,7 +17,7 @@ public class IPv4AddressTextField extends GridbagPanel {
     private JTextField[]    ipAddressField = new JTextField[IPV4_ADDRESS_LENGTH];
     private int             maxHeight;
 
-    public IPv4AddressTextField() {
+    public IPv4AddressTextField(JButton connectButton, String text) {
         JLabel  dotLabel;
         int     i;
 
@@ -25,7 +25,7 @@ public class IPv4AddressTextField extends GridbagPanel {
 
         for (i = 0; i < ipAddressField.length; i++) {
             ipAddressField[i] = new JTextField(IPV4_ADDRESS_FIELD_COLUMN);
-            ipAddressField[i].setDocument(new IPv4AddressDocument(i, ipAddressField));
+            ipAddressField[i].setDocument(new IPv4AddressDocument(i, ipAddressField, connectButton));
             ipAddressField[i].addFocusListener(new IPv4AddressFieldFocusListener(ipAddressField[i]));
             ipAddressField[i].addKeyListener(new IPv4AddressKeyListener());
             ipAddressField[i].setBorder(BorderFactory.createEmptyBorder());
@@ -51,5 +51,22 @@ public class IPv4AddressTextField extends GridbagPanel {
         setBackground(backgroundColor);
         Border border = UIManager.getBorder("TextField.border");
         setBorder(border);
+
+        if (text != null) {
+            ipAddressField[0].setText(text);
+        }
+    }
+
+    public String getText() {
+        String  text = "";
+        int     i;
+        for (i = 0; i < ipAddressField.length; i++) {
+            text = text + ipAddressField[i].getText();
+            if (i < (ipAddressField.length - 1)) {
+                text = text + ".";
+            }
+        }
+
+        return text;
     }
 }

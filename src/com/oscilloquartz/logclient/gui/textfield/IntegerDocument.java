@@ -47,6 +47,7 @@ public class IntegerDocument extends PlainDocument {
         }
 
         super.insertString(offs, str, a);
+
     }
 
     public void performLengthAction(int offs, String str, AttributeSet a, String newString) throws BadLocationException {

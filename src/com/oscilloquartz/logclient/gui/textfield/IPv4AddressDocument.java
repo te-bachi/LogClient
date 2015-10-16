@@ -9,14 +9,18 @@ import javax.swing.text.BadLocationException;
  */
 public class IPv4AddressDocument extends IntegerDocument {
 
-    private int             index;
-    private JTextField[]    ipAddressField;
+    protected int           index;
+    protected JTextField[]  ipAddressField;
+    protected JButton       connectButton;
 
-    public IPv4AddressDocument(int index, JTextField[] ipAddressField) {
+    public IPv4AddressDocument(int index, JTextField[] ipAddressField, JButton connectButton) {
         super(3, 0, 255);
+
+        addDocumentListener(new IPv4AddressDocumentListener(this));
 
         this.index          = index;
         this.ipAddressField = ipAddressField;
+        this.connectButton  = connectButton;
     }
 
     @Override
@@ -40,7 +44,9 @@ public class IPv4AddressDocument extends IntegerDocument {
         int     index;
         String  substring;
 
-        if ((index = str.indexOf('.')) != -1) {
+        index = str.indexOf('.');
+
+        if (index != -1 && index != 0) {
             substring = str.substring(0, index);
             this.ipAddressField[this.index].setText(substring);
             if (this.index < (IPv4AddressTextField.IPV4_ADDRESS_LENGTH - 1)) {
