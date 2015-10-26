@@ -15,6 +15,9 @@ public class Main {
             public void run() {
                 MainFrame frame = new MainFrame();
                 frame.setVisible(true);
+                if (!frame.setupNetwork()) {
+                    frame.close();
+                }
             }
         });
     }

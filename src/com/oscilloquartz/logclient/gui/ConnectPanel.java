@@ -17,14 +17,14 @@ public class ConnectPanel extends JPanel {
     private IPv4AddressTextField    ipAddressField;
     private JButton                 connectButton;
 
-    public ConnectPanel(ConnectList connectList) {
+    public ConnectPanel(MainFrame mainFrame) {
         String                  text = null;
 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        if (connectList.size() > 0) {
-            text = connectList.iterator().next();
+        if (mainFrame.getConnectList().size() > 0) {
+            text = mainFrame.getConnectList().iterator().next();
         }
 
         ipAddressLabel  = new JLabel("IPv4 Address: ");
@@ -36,13 +36,18 @@ public class ConnectPanel extends JPanel {
         connectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                connectList.push(ipAddressField.getText());
+                mainFrame.getConnectList().push(ipAddressField.getText());
+                mainFrame.getStateMachine().connect();
             }
         });
 
         add(ipAddressLabel);
         add(ipAddressField);
         add(connectButton);
+    }
+
+    public String getHostname() {
+        return ipAddressField.getText();
     }
 
     public void checkFocus() {

@@ -1,6 +1,9 @@
 package com.oscilloquartz.logclient.gui.statusbar;
 
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
@@ -10,27 +13,70 @@ public class StatusBar extends JPanel {
 
     private Icon   icon;
     private JLabel iconLabel;
+    private JLabel stateLabel;
     private JLabel textLabel;
 
     public StatusBar() {
         JPanel rightPanel;
+        JPanel bottomPanel;
+        Border lineBorder;
+        Border paddingBorder;
 
         setLayout(new BorderLayout());
         setBackground(SystemColor.control);
         setPreferredSize(new Dimension(10, 23));
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
+        paddingBorder = BorderFactory.createEmptyBorder(0, 2, 0, 0);
+        lineBorder = new AbstractBorder() {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                super.paintBorder(c, g, x, y, width, height);
+                g.setColor(Color.DARK_GRAY);
+                g.drawLine(x + 1, 0, x + 1, height);
+            }
+
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return new Insets(0, 10, 0, 0);
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return true;
+            }
+        };
+
+        this.stateLabel = new JLabel("");
+        this.stateLabel.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+        this.stateLabel.setPreferredSize(new Dimension(120, 10));
+
         this.icon       = new AngledLinesWindowsCornerIcon();
         this.iconLabel  = new JLabel(this.icon);
+
+        bottomPanel     = new JPanel(new BorderLayout());
+        bottomPanel.add(this.iconLabel, BorderLayout.SOUTH);
+        bottomPanel.setOpaque(false);
+
         rightPanel      = new JPanel(new BorderLayout());
-        rightPanel.add(this.iconLabel, BorderLayout.SOUTH);
+        rightPanel.add(bottomPanel, BorderLayout.EAST);
+        rightPanel.add(this.stateLabel, BorderLayout.WEST);
         rightPanel.setOpaque(false);
 
+        this.textLabel  = new JLabel("");
         add(rightPanel, BorderLayout.EAST);
-        add(new JLabel("Ready!"), BorderLayout.CENTER);
+        //add(this.stateLabel, BorderLayout.WEST);
+        add(this.textLabel, BorderLayout.CENTER);
+    }
+
+    public void setState(String state) {
+        this.stateLabel.setText(state);
     }
 
 
+    public void setText(String text) {
+        this.textLabel.setText(text);
+    }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
