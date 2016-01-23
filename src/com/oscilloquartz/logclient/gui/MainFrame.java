@@ -40,7 +40,7 @@ public class MainFrame extends JFrame implements WindowListener {
         imageList.add(new ImageIcon(Main.class.getResource("images/icon32x32.png")).getImage());
         imageList.add(new ImageIcon(Main.class.getResource("images/icon20x20.png")).getImage());
 
-        setTitle("OSA Log Client");
+        setTitle("OSA Log Client v1.01");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImages(imageList);

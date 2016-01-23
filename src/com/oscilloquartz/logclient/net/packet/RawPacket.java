@@ -19,4 +19,20 @@ public class RawPacket {
         this.data   = data;
         this.length = length;
     }
+
+    public short getUInt8(int offset) {
+        return (short) (((((short) data[offset + 0]) & 0xff) << 0));
+    }
+
+    public int getUInt16(int offset) {
+        return (int) (((((int) data[offset + 0])     & 0xff) << 0) |
+                      ((((int) data[offset + 1]) & 0xff) << 8));
+    }
+
+    public long getUInt32(int offset) {
+        return (long) (((((long) data[offset + 0])     & 0xff) <<  0) |
+                       ((((long) data[offset + 1]) & 0xff) <<  8) |
+                       ((((long) data[offset + 2]) & 0xff) << 16) |
+                       ((((long) data[offset + 3]) & 0xff) << 24));
+    }
 }

@@ -49,6 +49,10 @@ public class Packet {
 
     public static Packet decode(RawPacket rawPacket) throws PacketException {
         Packet packet = new Packet();
+
+        if (rawPacket == null) {
+            throw new PacketException("rawPacket == null");
+        }
         packet.head = new OsaHeader().decode(rawPacket, 0);
 
         return packet;

@@ -5,16 +5,17 @@ package com.oscilloquartz.logclient.net.packet;
  */
 public class OsaLogSubscribeHeader extends Header {
 
-    private static final int    HEADER_LENGTH           = 2;
+    private static final int    HEADER_LENGTH               = 2;
 
-    protected static final int  OFFSET_SUBSCRIBE_TYPE   = 0;
-    protected static final int  OFFSET_DURATION         = 1;
+    protected static final int  OFFSET_SUBSCRIBE_TYPE       = 0;
+    protected static final int  OFFSET_DURATION             = 1;
 
-    public static final byte    SUBSCRIBE_TYPE_REQUEST  = 0x01;
-    public static final byte    SUBSCRIBE_TYPE_CANCEL   = 0x02;
-    public static final byte    SUBSCRIBE_TYPE_GRANT    = 0x03;
-    public static final byte    SUBSCRIBE_TYPE_REJECT   = 0x04;
-    public static final byte    SUBSCRIBE_TYPE_EXPIRED  = 0x05;
+    public static final byte    SUBSCRIBE_TYPE_REQUEST      = 0x01;
+    public static final byte    SUBSCRIBE_TYPE_CANCEL       = 0x02;
+    public static final byte    SUBSCRIBE_TYPE_GRANT        = 0x03;
+    public static final byte    SUBSCRIBE_TYPE_REJECT       = 0x04;
+    public static final byte    SUBSCRIBE_TYPE_EXPIRED      = 0x05;
+    public static final byte    SUBSCRIBE_TYPE_CANCEL_ACK   = 0x06;
 
     public byte subscribeType;
     public byte duration;
@@ -54,6 +55,14 @@ public class OsaLogSubscribeHeader extends Header {
 
     @Override
     public Header decode(RawPacket rawPacket, int offset) throws PacketException {
-        return null;
+
+        if (rawPacket.length < offset + HEADER_LENGTH) {
+            throw new PacketException("decode OSA log subscribe header: size too small (present=" + (rawPacket.length - offset) + ", required=" + HEADER_LENGTH + ")");
+        }
+
+        subscribeType   = rawPacket.data[offset + OFFSET_SUBSCRIBE_TYPE];
+        duration        = rawPacket.data[offset + OFFSET_DURATION];
+
+        return this;
     }
 }

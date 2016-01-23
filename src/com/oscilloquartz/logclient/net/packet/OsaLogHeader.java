@@ -1,5 +1,7 @@
 package com.oscilloquartz.logclient.net.packet;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 public class OsaLogHeader extends Header {
@@ -84,16 +86,16 @@ public class OsaLogHeader extends Header {
     public static final int OFFSET_MESSAGE_LENGTH       = 10;
     public static final int OFFSET_MESSAGE              = 12;
 
-    public byte      year;
-    public byte      month;
-    public byte      day;
-    public byte      hour;
-    public byte      minute;
-    public byte      second;
-    public short     msec;
-    public byte      category;
-    public byte      level;
-    public short     messageLength;
+    public short     year;
+    public short     month;
+    public short     day;
+    public short     hour;
+    public short     minute;
+    public short     second;
+    public int       msec;
+    public short     category;
+    public short     level;
+    public int       messageLength;
     public byte[]    message;
 
     public OsaLogHeader() {
@@ -116,25 +118,44 @@ public class OsaLogHeader extends Header {
             throw new PacketException("decode OSA log header: size too small (present=" + (rawPacket.length - offset) + ", required=" + HEADER_LENGTH_MIN + ")");
         }
 
-        year            = rawPacket.data[offset + OFFSET_TIMESTAMP_YEAR];
-        month           = rawPacket.data[offset + OFFSET_TIMESTAMP_MONTH];
-        day             = rawPacket.data[offset + OFFSET_TIMESTAMP_DAY];
-        hour            = rawPacket.data[offset + OFFSET_TIMESTAMP_HOUR];
-        minute          = rawPacket.data[offset + OFFSET_TIMESTAMP_MINUTE];
-        second          = rawPacket.data[offset + OFFSET_TIMESTAMP_SECOND];
-        msec            = rawPacket.data[offset + OFFSET_TIMESTAMP_MILISECOND];
-        category        = rawPacket.data[offset + OFFSET_CATEGORY];
-        level           = rawPacket.data[offset + OFFSET_LEVEL];
-        messageLength   = rawPacket.data[offset + OFFSET_MESSAGE_LENGTH];
+        year            = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_YEAR);
+        month           = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_MONTH);
+        day             = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_DAY);
+        hour            = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_HOUR);
+        minute          = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_MINUTE);
+        second          = rawPacket.getUInt8 (offset + OFFSET_TIMESTAMP_SECOND);
+        msec            = rawPacket.getUInt16(offset + OFFSET_TIMESTAMP_MILISECOND);
+        category        = rawPacket.getUInt8 (offset + OFFSET_CATEGORY);
+        level           = rawPacket.getUInt8 (offset + OFFSET_LEVEL);
+        messageLength   = rawPacket.getUInt16(offset + OFFSET_MESSAGE_LENGTH);
+//        byte[] len = { (byte) 0x00, (byte) 0x88 };
+//        int bla = ByteBuffer.wrap(len, 0, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
+//        System.out.println(String.format("bla: %d (0x%04x)", bla, bla));
+//
+//
+//        bla = ((((int) len[0])     & 0xff) << 0) |
+//              ((((int) len[1]) & 0xff) << 8);
+//        System.out.println(String.format("bla: %d (0x%04x)", bla, bla));
+
+        //messageLength   = ByteBuffer.wrap(rawPacket.data, offset + OFFSET_MESSAGE_LENGTH, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
+
+                //((((int) rawPacket.data[offset + OFFSET_MESSAGE_LENGTH])    & 0xff) << 0) |
+                //((((int) rawPacket.data[offset + OFFSET_MESSAGE_LENGTH + 1] & 0xff) << 8));
 
         if (messageLength > MESSAGE_LENGTH_MAX) {
+            System.out.println(String.format("message length (stripped): %d (0x%02x)", MESSAGE_LENGTH_MAX, MESSAGE_LENGTH_MAX));
             message = new byte[MESSAGE_LENGTH_MAX];
         } else {
+            System.out.println(String.format("message length: %d (0x%02x)", messageLength, messageLength));
             message = new byte[messageLength];
         }
 
         for (int i = 0; i < message.length; i++) {
-            message[i] = rawPacket.data[offset + OFFSET_MESSAGE + i];
+            try {
+                message[i] = rawPacket.data[offset + OFFSET_MESSAGE + i];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
         }
 
         return this;
