@@ -1,6 +1,6 @@
 package com.oscilloquartz.logclient.gui;
 
-import com.oscilloquartz.logclient.Main;
+import com.oscilloquartz.logclient.GuiMain;
 import com.oscilloquartz.logclient.fsm.StateMachine;
 import com.oscilloquartz.logclient.gui.statusbar.StatusBar;
 import com.oscilloquartz.logclient.net.Network;
@@ -9,10 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 /**
  *
@@ -35,12 +33,12 @@ public class MainFrame extends JFrame implements WindowListener {
         connectList     = new ConnectList();
 
         imageList = new ArrayList<>();
-        imageList.add(new ImageIcon(Main.class.getResource("images/icon64x64.png")).getImage());
-        imageList.add(new ImageIcon(Main.class.getResource("images/icon40x40.png")).getImage());
-        imageList.add(new ImageIcon(Main.class.getResource("images/icon32x32.png")).getImage());
-        imageList.add(new ImageIcon(Main.class.getResource("images/icon20x20.png")).getImage());
+        imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon64x64.png")).getImage());
+        imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon40x40.png")).getImage());
+        imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon32x32.png")).getImage());
+        imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon20x20.png")).getImage());
 
-        setTitle("OSA Log Client v1.01");
+        setTitle("OSA Log Client v1.02");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImages(imageList);
@@ -51,7 +49,7 @@ public class MainFrame extends JFrame implements WindowListener {
         setMinimumSize(new Dimension(600, 400));
         setPreferredSize(new Dimension(800, 600));
 
-        setJMenuBar(new MainMenuBar(connectList));
+        setJMenuBar(new MainMenuBar(this, connectList));
 
         connectPanel    = new ConnectPanel(this);
         logPanel        = new LogPanel();
@@ -141,5 +139,9 @@ public class MainFrame extends JFrame implements WindowListener {
     @Override
     public void windowDeactivated(WindowEvent e) {
 
+    }
+
+    public void exit() {
+        processEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 }

@@ -7,6 +7,8 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  *
@@ -16,6 +18,7 @@ public class ConnectPanel extends JPanel {
     private JLabel                  ipAddressLabel;
     private IPv4AddressTextField    ipAddressField;
     private JButton                 connectButton;
+    private JCheckBox               autoscrollCheckBox;
 
     public ConnectPanel(MainFrame mainFrame) {
         String                  text = null;
@@ -41,9 +44,17 @@ public class ConnectPanel extends JPanel {
             }
         });
 
+        autoscrollCheckBox = new JCheckBox("Autoscroll");
+        autoscrollCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                mainFrame.getLogPanel().getTable().setAutoscroll(e.getStateChange() == ItemEvent.SELECTED);
+            }
+        });
         add(ipAddressLabel);
         add(ipAddressField);
         add(connectButton);
+        add(autoscrollCheckBox);
     }
 
     public String getHostname() {
