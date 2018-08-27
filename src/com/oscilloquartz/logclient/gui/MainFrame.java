@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
@@ -38,6 +39,7 @@ public class MainFrame extends JFrame implements WindowListener {
         imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon32x32.png")).getImage());
         imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon20x20.png")).getImage());
 
+        setDefaultSize(24);
         setTitle("OSA Log Client v1.02");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -62,6 +64,26 @@ public class MainFrame extends JFrame implements WindowListener {
         contentPane.add(connectPanel, BorderLayout.NORTH);
         contentPane.add(logPanel, BorderLayout.CENTER);
         contentPane.add(statusBar, BorderLayout.SOUTH);
+    }
+
+
+
+    public void setDefaultSize(int size) {
+        Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+        Object[] keys = keySet.toArray(new Object[keySet.size()]);
+
+        for (Object key : keys) {
+
+            if (key != null && key.toString().toLowerCase().contains("font")) {
+
+                System.out.println(key);
+                Font font = UIManager.getDefaults().getFont(key);
+                if (font != null) {
+                    font = font.deriveFont((float)size);
+                    UIManager.put(key, font);
+                }
+            }
+        }
     }
 
     public boolean setupNetwork() {

@@ -17,7 +17,7 @@ public class ReceiveThread implements Runnable {
     private DatagramSocket  socket;
     private Thread          thread;
 
-    private static final boolean USE_STATIC_PACKET = false;
+    private static final boolean USE_STATIC_PACKET = true;
     private static final byte[] STATIC_PACKET2 = {
             (byte) 0x01, (byte) 0x03, (byte) 0x03, (byte) 0x00, (byte) 0x00, (byte) 0x00,
             (byte) 0x06, (byte) 0x01, (byte) 0x21, (byte) 0xf0, (byte) 0x00, (byte) 0x17, (byte) 0x02, (byte) 0x2d, (byte) 0x00, (byte) 0x41, (byte) 0x52, (byte) 0x50, (byte) 0x20, (byte) 0x70, (byte) 0x61, (byte) 0x63,
