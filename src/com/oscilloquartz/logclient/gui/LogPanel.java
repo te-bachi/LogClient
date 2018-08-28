@@ -26,6 +26,7 @@ public class LogPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         table = new LogPanelJTable();
+        LogClientUtil.applyHiDPI(table);
 
         sp1 = new JScrollPane();
         sp1.setViewportView(table);

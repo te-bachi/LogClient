@@ -10,6 +10,12 @@ import java.awt.event.ComponentEvent;
  *
  */
 public class LogPanelJTable extends JTable {
+
+    private static int          COLUMN_WIDTH_TIME       = 180;
+    private static int          COLUMN_WIDTH_CATEGORY   = 120;
+    private static int          COLUMN_WIDTH_LEVEL      = 70;
+    private static int          COLUMN_WIDTH_SCALE_MAX  = 2;
+
     private DefaultTableModel   logModel;
     private LogCellRenderer     logRenderer;
     private boolean             autoscroll;
@@ -76,14 +82,14 @@ public class LogPanelJTable extends JTable {
         setFont(FontSelector.getInstance().getMonospaceFont());
 
         setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        getColumnModel().getColumn(0).setMinWidth(200);
-        getColumnModel().getColumn(0).setMaxWidth(2 * 200);
+        getColumnModel().getColumn(0).setMinWidth(LogClientUtil.scale(COLUMN_WIDTH_TIME));
+        getColumnModel().getColumn(0).setMaxWidth(COLUMN_WIDTH_SCALE_MAX * LogClientUtil.scale(COLUMN_WIDTH_TIME));
         getColumnModel().getColumn(0).setCellRenderer(logRenderer);
-        getColumnModel().getColumn(1).setMinWidth(150);
-        getColumnModel().getColumn(1).setMaxWidth(2 * 150);
+        getColumnModel().getColumn(1).setMinWidth(LogClientUtil.scale(COLUMN_WIDTH_CATEGORY));
+        getColumnModel().getColumn(1).setMaxWidth(COLUMN_WIDTH_SCALE_MAX * LogClientUtil.scale(COLUMN_WIDTH_CATEGORY));
         getColumnModel().getColumn(1).setCellRenderer(logRenderer);
-        getColumnModel().getColumn(2).setMinWidth(100);
-        getColumnModel().getColumn(2).setMaxWidth(2 * 100);
+        getColumnModel().getColumn(2).setMinWidth(LogClientUtil.scale(COLUMN_WIDTH_LEVEL));
+        getColumnModel().getColumn(2).setMaxWidth(COLUMN_WIDTH_SCALE_MAX * LogClientUtil.scale(COLUMN_WIDTH_LEVEL));
         getColumnModel().getColumn(2).setCellRenderer(logRenderer);
         getColumnModel().getColumn(3).setCellRenderer(logRenderer);
     }

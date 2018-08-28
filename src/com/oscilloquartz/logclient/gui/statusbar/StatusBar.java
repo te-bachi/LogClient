@@ -1,5 +1,7 @@
 package com.oscilloquartz.logclient.gui.statusbar;
 
+import com.oscilloquartz.logclient.gui.LogClientUtil;
+
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -24,7 +26,7 @@ public class StatusBar extends JPanel {
 
         setLayout(new BorderLayout());
         setBackground(SystemColor.control);
-        setPreferredSize(new Dimension(10, 23));
+        setPreferredSize(new Dimension(LogClientUtil.scale(10), LogClientUtil.scale(23)));
         setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
         paddingBorder = BorderFactory.createEmptyBorder(0, 2, 0, 0);

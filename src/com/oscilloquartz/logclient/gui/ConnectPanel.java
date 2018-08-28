@@ -22,7 +22,6 @@ public class ConnectPanel extends JPanel {
 
     public ConnectPanel(MainFrame mainFrame) {
         String                  text = null;
-
         setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -35,22 +34,28 @@ public class ConnectPanel extends JPanel {
         connectButton.setEnabled(false);
         ipAddressField  = new IPv4AddressTextField(connectButton, text);
 
-        connectButton.setPreferredSize(new Dimension(100, 20));
+        ipAddressField.setPreferredSize(new Dimension(LogClientUtil.scale(150), LogClientUtil.scale(20)));
+
+        connectButton.setPreferredSize(new Dimension(LogClientUtil.scale(100), LogClientUtil.scale(20)));
         connectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.getConnectList().push(ipAddressField.getText());
                 mainFrame.getStateMachine().connect();
+                Dimension dimension = connectButton.getPreferredSize();
+                System.out.println(dimension.toString());
             }
         });
 
         autoscrollCheckBox = new JCheckBox("Autoscroll");
+        //autoscrollCheckBox.setPreferredSize(new Dimension(LogClientUtil.scale(10), LogClientUtil.scale(10)));
         autoscrollCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 mainFrame.getLogPanel().getTable().setAutoscroll(e.getStateChange() == ItemEvent.SELECTED);
             }
         });
+
         add(ipAddressLabel);
         add(ipAddressField);
         add(connectButton);

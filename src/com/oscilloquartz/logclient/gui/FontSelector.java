@@ -39,12 +39,12 @@ public class FontSelector {
     private void selectMonospaceFont(Set<String> fontSet) {
         for (String font : MONOSPACE_FONTS) {
             if (fontSet.contains(font)) {
-                this.monospaceFont = new Font(font, MONOSPACE_STYLE, MONOSPACE_SIZE);
+                this.monospaceFont = new Font(font, MONOSPACE_STYLE, LogClientUtil.scale(MONOSPACE_SIZE));
                 return;
             }
         }
 
-        this.monospaceFont = new Font(Font.MONOSPACED, MONOSPACE_STYLE, MONOSPACE_SIZE);
+        this.monospaceFont = new Font(Font.MONOSPACED, MONOSPACE_STYLE, LogClientUtil.scale(MONOSPACE_SIZE));
     }
 
     public Font getMonospaceFont() {

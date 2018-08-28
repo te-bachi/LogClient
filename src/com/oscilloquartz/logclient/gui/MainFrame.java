@@ -6,6 +6,7 @@ import com.oscilloquartz.logclient.gui.statusbar.StatusBar;
 import com.oscilloquartz.logclient.net.Network;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -39,7 +40,9 @@ public class MainFrame extends JFrame implements WindowListener {
         imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon32x32.png")).getImage());
         imageList.add(new ImageIcon(GuiMain.class.getResource("images/icon20x20.png")).getImage());
 
-        setDefaultSize(24);
+        //setDefaultSize(24);
+        //LogClientUtil.applyHiDPIOnFonts();
+
         setTitle("OSA Log Client v1.02");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -48,8 +51,8 @@ public class MainFrame extends JFrame implements WindowListener {
         setLayout(new BorderLayout());
         addWindowListener(this);
 
-        setMinimumSize(new Dimension(600, 400));
-        setPreferredSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(LogClientUtil.scale(600), LogClientUtil.scale(400)));
+        setPreferredSize(new Dimension(LogClientUtil.scale(800), LogClientUtil.scale(600)));
 
         setJMenuBar(new MainMenuBar(this, connectList));
 
@@ -65,8 +68,6 @@ public class MainFrame extends JFrame implements WindowListener {
         contentPane.add(logPanel, BorderLayout.CENTER);
         contentPane.add(statusBar, BorderLayout.SOUTH);
     }
-
-
 
     public void setDefaultSize(int size) {
         Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
